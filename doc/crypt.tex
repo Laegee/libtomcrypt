@@ -3983,7 +3983,7 @@ int main(void)
    }
 
    /* make a 192-bit ECC key */
-   if ((err = ecc_make_key(&prng, find_prng("yarrow"), 24, &mykey))
+   if ((err = ecc_make_key(&prng, find_prng("yarrow"), 24, &mykey))             XXX-FIXME
        != CRYPT_OK) {
       printf("Error making key: %s\n", error_to_string(err));
       return -1;
@@ -4015,7 +4015,7 @@ int main(void)
    }
 
    /* make a 192-bit ECC key */
-   if ((err = ecc_make_key(NULL, find_prng("sprng"), 24, &mykey))
+   if ((err = ecc_make_key(NULL, find_prng("sprng"), 24, &mykey))       XXX-FIXME
        != CRYPT_OK) {
       printf("Error making key: %s\n", error_to_string(err));
       return -1;
@@ -4920,27 +4920,21 @@ to attack (no sub-exponential attacks exist unlike normal DH crypto) in fact the
 of the order of the base point in time.  That means if you use a base point of order $2^{192}$ (which would represent a
 192-bit key) then the work factor is $2^{96}$ in order to find the secret key.
 
-The curves in this library are taken from the following website:
-\begin{verbatim}
-http://csrc.nist.gov/cryptval/dss.htm
-\end{verbatim}
-
-As of v1.15 three new curves from the SECG standards are also included they are the secp112r1, secp128r1, and secp160r1 curves.  These curves were added to
-support smaller devices which do not need as large keys for security.
+XXX-FIXME As of v1.19 ... add table with all supported curves
 
 They are all curves over the integers modulo a prime.  The curves have the basic equation that is:
 \begin{equation}
-y^2 = x^3 - 3x + b\mbox{ }(\mbox{mod }p)
+y^2 = x^3 + ax + b\mbox{ }(\mbox{mod }p)
 \end{equation}
 
-The variable $b$ is chosen such that the number of points is nearly maximal.  In fact the order of the base points $\beta$
-provided are very close to $p$ that is $\vert \vert \phi(\beta) \vert \vert \approx \vert \vert p \vert \vert$.  The curves
-range in order from $\approx 2^{112}$ points to $\approx 2^{521}$.  According to the source document any key size greater
-than or equal to 256-bits is sufficient for long term security.
+The curves range in order from $\approx 2^{112}$ points to $\approx 2^{521}$.
 
 \mysection{Fixed Point Optimizations}
+XXX-FIXME As of v1.19 ... broken
+
 \index{Fixed Point ECC}
 \index{MECC\_FP}
+
 As of v1.12 of LibTomCrypt, support for Fixed Point ECC point multiplication has been added.  It is a generic optimization that is
 supported by any conforming math plugin.  It is enabled by defining \textbf{MECC\_FP} during the build, such as
 
@@ -4979,6 +4973,8 @@ LibTomCrypt uses a unique format for ECC public and private keys.  While ANSI X9
 In the case of LibTomCrypt, it is meant \textbf{solely} for NIST and SECG $GF(p)$ curves.  The format of the keys is as follows:
 
 \index{ECC Key Format}
+XXX-FIXME As of v1.19 ... the old format is obsolete we supported several standard formats
+
 \begin{small}
 \begin{verbatim}
 ECCPublicKey ::= SEQUENCE {
@@ -5007,6 +5003,8 @@ The first flags bit denotes whether the key is public (zero) or private (one).
 \mysection{ECC Curve Parameters}
 The library uses the following structure to describe an elliptic curve.  This is used internally, as well as by the new
 extended ECC functions which allow the user to specify their own curves.
+
+XXX-FIXME As of v1.19 ... ltc\_ecc\_set\_type replaced by ltc\_ecc\_curve
 
 \index{ltc\_ecc\_set\_type}
 \begin{verbatim}
@@ -5039,6 +5037,8 @@ The curve must be of the form $y^2 = x^3 - 3x + b$, and all of the integer param
 
 \mysection{Core Functions}
 \subsection{ECC Key Generation}
+XXX-FIXME As of v1.19 ... new style
+
 There is a key structure called \textit{ecc\_key} used by the ECC functions.  There is a function to make a key:
 \index{ecc\_make\_key()}
 \begin{verbatim}
@@ -5055,6 +5055,8 @@ the keysize up to the next available one.
 The function will free any internally allocated resources if there is an error.
 
 \subsection{Extended Key Generation}
+XXX-FIXME As of v1.19 ... new style
+
 As of v1.16, the library supports an extended key generation routine which allows the user to specify their own curve.  It is specified as follows:
 
 \index{ecc\_make\_key\_ex()}
@@ -5077,6 +5079,8 @@ void ecc_free(ecc_key *key);
 \end{verbatim}
 
 \subsection{ECC Key Export}
+XXX-FIXME As of v1.19 ... more export features
+
 To export an ECC key using the LibTomCrypt format call the following function:
 \index{ecc\_export()}
 \begin{verbatim}
@@ -5088,6 +5092,8 @@ int ecc_export(unsigned char *out,
 This will export the key with the given \textit{type} (\textbf{PK\_PUBLIC} or \textbf{PK\_PRIVATE}), and store it to \textit{out}.
 
 \subsection{ECC Key Import}
+XXX-FIXME As of v1.19 ... more import features
+
 The following function imports a LibTomCrypt format ECC key:
 \index{ecc\_import()}
 \begin{verbatim}
@@ -5099,6 +5105,7 @@ This will import the ECC key from \textit{in}, and store it in the ecc\_key stru
 any allocated memory automatically.
 
 \subsection{Extended Key Import}
+XXX-FIXME As of v1.19 ... more import features
 
 The following function imports a LibTomCrypt format ECC key using a specified set of curve parameters:
 \index{ecc\_import\_ex()}
@@ -5125,6 +5132,8 @@ The ECC key pointed to by \textit{key} is exported in public fashion to the arra
 section 4.3.6 of the standard.  It does not allow for the export of private keys.
 
 \subsection{ANSI X9.63 Import}
+XXX-FIXME As of v1.19 ... legacy
+
 The following function imports an ANSI X9.63 section 4.3.6 format public ECC key:
 
 \index{ecc\_ansi\_x963\_import()}
@@ -5137,6 +5146,8 @@ This will import the key stored in the array pointed to by \textit{in} of length
 \textit{key}.  The function will free any allocated memory upon error.
 
 \subsection{Extended ANSI X9.63 Import}
+XXX-FIXME As of v1.19 ... legacy
+
 The following function allows the importing of an ANSI x9.63 section 4.3.6 format public ECC key using user specified domain parameters:
 
 \index{ecc\_ansi\_x963\_import\_ex()}
